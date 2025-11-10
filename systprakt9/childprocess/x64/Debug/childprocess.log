@@ -1,0 +1,3 @@
+﻿  childprocess.cpp
+C:\Users\st310-08\Desktop\Солихов\systprakt9\childprocess\childprocess.cpp(11,9): warning C4101: i: неиспользованная локальная переменная
+  childprocess.vcxproj -> C:\Users\st310-08\Desktop\Солихов\systprakt9\x64\Debug\childprocess.exe
