@@ -1,3 +1,4 @@
 ﻿  childprocess.cpp
-C:\Users\st310-08\Desktop\Солихов\systprakt9\childprocess\childprocess.cpp(11,9): warning C4101: i: неиспользованная локальная переменная
-  childprocess.vcxproj -> C:\Users\st310-08\Desktop\Солихов\systprakt9\x64\Debug\childprocess.exe
+C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\childprocess\childprocess.cpp(14,15): warning C4312: приведение типов: преобразование из "int" в "HANDLE" большего размера
+C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\childprocess\childprocess.cpp(12,10): warning C4101: c: неиспользованная локальная переменная
+  childprocess.vcxproj -> C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\x64\Debug\childprocess.exe

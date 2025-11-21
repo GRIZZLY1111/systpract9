@@ -2,46 +2,47 @@
 //
 
 #include <iostream>
-#include <conio.h>
 #include <Windows.h>
+#include <conio.h>
 
 int main(int argc, char* argv[])
 {
     setlocale(0, "rus");
-    wchar_t lpszAppName[] = L"C:\\Users\\st310-08\\Desktop\\Солихов\\systprakt9\\x64\\Debug\\childprocess.exe";
-    STARTUPINFO si;
-    PROCESS_INFORMATION piApp;
+    HANDLE hThread;
+    char c;
 
-    ZeroMemory(&si, sizeof(STARTUPINFO));
-    si.cb = sizeof(STARTUPINFO);
+    hThread = (HANDLE)atoi(argv[1]);
+    bool f = false;
 
-    if (!CreateProcess(lpszAppName, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &si, &piApp)) {
-        std::cout << "Процесс не запустился";
-        _getch();
-        return 0;
-    }
-    std::cout << "Процесс запустился" << std::endl;
-    int i = 0;
+    std::cout << "Управление счетчиком:\n";
+    std::cout << "p - приостановить/возобновить\n";
+    std::cout << "q - выйти из контроллера\n";
 
-    while (i < 10) {
-        std::cout << i << std::endl;
-        Sleep(1000);
-        i++;
-    }
     while (true) {
-        char c;
-        std::cout << "Введите букву t для завершения потока" << std::endl;
-        std::cin >> c;
-        if (c == 't') {
-            TerminateProcess(piApp.hProcess, 1);
+        char c = _getch();
+        if (c == 'p' || c == 'P') {
+            if (!f) {
+                SuspendThread(hThread);
+                f = true;
+                std::cout << "\n[ПАУЗА]" << std::endl;
+            }
+            else {
+                ResumeThread(hThread);
+                f = false;
+                std::cout << "\n[ВОЗОБНОВЛЕНО]" << std::endl;
+            }
+        }
+        else if (c == 'q' || c == 'Q') {
+            std::cout << "\nВыход из контроллера." << std::endl;
             break;
         }
     }
 
-    WaitForSingleObject(piApp.hProcess, INFINITE);
+    TerminateThread(hThread, 0);
+    CloseHandle(hThread);
 
-    CloseHandle(piApp.hThread);
-    CloseHandle(piApp.hProcess);
+    std::cout << "Нажмите на клавиатуру чтобы закрыть это окно" << std::endl;
+    _getch();
     return 0;
 }
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
