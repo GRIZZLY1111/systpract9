@@ -8,19 +8,15 @@ volatile int x=0;
 
 volatile int count;
 
-void thread() {
-    while (x!='5') {
+DWORD WINAPI thread() {
+    while (true) {
         count++;
         Sleep(1000);
         system("cls");
         std::cout << "Счетчик = " << count << std::endl;
-        std::cout << "Выберите что вы хотите открыть\n1 - Microsoft Word \n2 - Microsoft Excel \n3 - Paint \n4 - Notepad \n5 - закрыть приложение" << std::endl;
-        if (_kbhit()) {
-            x = (int)_getch();
-        }
-        else {
-        }
+        std::cout << "Выберите что вы хотите открыть\n1 - Microsoft Word \n2 - Microsoft Excel \n3 - Paint \n4 - Notepad\n5 - Microsoft Word \n6 - Microsoft Excel \n7 - Paint \n8 - Notepad  \n9 - закрыть приложение" << std::endl;
     }
+    return 0;
 }
 
 int main()
@@ -28,8 +24,10 @@ int main()
     setlocale(0, "rus");
     int i = 0;
 
-    wchar_t cmd[255] = L"C:\\Users\\admin\\OneDrive\\Рабочий стол\\Системное программирование\\systpract9-main\\systprakt9\\x64\\Debug\\childprocess.exe ";
-    wchar_t symHandle[20];
+    HANDLE hThread, hInheritThread;
+    DWORD IDThread;
+    wchar_t cmd[255] = L"C:\\Users\\st310-08\\Desktop\\systpract9-main\\systprakt9\\x64\\Debug\\childprocess.exe ";
+    wchar_t symHandle[255] = L"";
     wchar_t lpszAppNameP[] = L"C:\\WINDOWS\\system32\\mspaint.exe";
     wchar_t lpszAppNameE[] = L"C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE";
     wchar_t lpszAppNameW[] = L"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE";
@@ -37,12 +35,13 @@ int main()
     STARTUPINFO si;
     PROCESS_INFORMATION piApp;
 
-    HANDLE hThread, hInheritThread;
-    DWORD IDThread;
-
-    hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)thread, NULL, 0, NULL);
+    hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)thread, NULL, HANDLE_FLAG_INHERIT, &IDThread);
     
     if (hThread == NULL) {
+        return GetLastError();
+    }
+
+    if (!SetHandleInformation(hThread, HANDLE_FLAG_INHERIT, HANDLE_FLAG_INHERIT)) {
         return GetLastError();
     }
 
@@ -55,7 +54,7 @@ int main()
     ZeroMemory(&si, sizeof(STARTUPINFO));
     si.cb = sizeof(STARTUPINFO);
 
-    _itow_s((int)hInheritThread, symHandle, 20);
+    _itow_s((int)hInheritThread, symHandle, 10);
 
     wcscat_s(cmd, symHandle);
 
@@ -65,13 +64,22 @@ int main()
         _getch();
         return GetLastError();
     }
-
-    while (x != '5') {
+    STARTUPINFO siW;
+    PROCESS_INFORMATION piAppW;
+    STARTUPINFO siE;
+    PROCESS_INFORMATION piAppE;
+    STARTUPINFO siP;
+    PROCESS_INFORMATION piAppP;
+    STARTUPINFO siN;
+    PROCESS_INFORMATION piAppN;
+    piAppW.hProcess = NULL;
+    piAppE.hProcess = NULL;
+    piAppP.hProcess = NULL;
+    piAppN.hProcess = NULL;
+    while (true) {
+        char x = _getch();
         switch (x) {
-        case 1:
-            STARTUPINFO siW;
-            PROCESS_INFORMATION piAppW;
-
+        case '1':
             ZeroMemory(&siW, sizeof(STARTUPINFO));
             siW.cb = sizeof(STARTUPINFO);
 
@@ -82,14 +90,8 @@ int main()
             }
             std::cout << "Процесс запустился" << std::endl;
 
-            WaitForSingleObject(piAppW.hProcess, INFINITE);
-
-            CloseHandle(piAppW.hThread);
-            CloseHandle(piAppW.hProcess);
             break;
-        case 2:
-            STARTUPINFO siE;
-            PROCESS_INFORMATION piAppE;
+        case '2':
 
             ZeroMemory(&siE, sizeof(STARTUPINFO));
             siE.cb = sizeof(STARTUPINFO);
@@ -101,14 +103,8 @@ int main()
             }
             std::cout << "Процесс запустился" << std::endl;
 
-            WaitForSingleObject(piAppE.hProcess, INFINITE);
-
-            CloseHandle(piAppE.hThread);
-            CloseHandle(piAppE.hProcess);
             break;
-        case 3:
-            STARTUPINFO siP;
-            PROCESS_INFORMATION piAppP;
+        case '3':
 
             ZeroMemory(&siP, sizeof(STARTUPINFO));
             siP.cb = sizeof(STARTUPINFO);
@@ -119,15 +115,8 @@ int main()
                 return 0;
             }
             std::cout << "Процесс запустился" << std::endl;
-
-            WaitForSingleObject(piAppP.hProcess, INFINITE);
-
-            CloseHandle(piAppP.hThread);
-            CloseHandle(piAppP.hProcess);
             break;
-        case 4:
-            STARTUPINFO siN;
-            PROCESS_INFORMATION piAppN;
+        case '4':
 
             ZeroMemory(&siN, sizeof(STARTUPINFO));
             siN.cb = sizeof(STARTUPINFO);
@@ -138,19 +127,49 @@ int main()
                 return 0;
             }
             std::cout << "Процесс запустился" << std::endl;
-
-            WaitForSingleObject(piAppN.hProcess, INFINITE);
-
-            CloseHandle(piAppN.hThread);
-            CloseHandle(piAppN.hProcess);
             break;
+        case '5':
+            if (piAppW.hProcess != NULL) {
+                TerminateProcess(piAppW.hProcess, 0);
+                CloseHandle(piAppW.hProcess);
+                CloseHandle(piAppW.hThread);
+                piAppW.hProcess = NULL;
+            }
+            break;
+        case '6':
+            if (piAppE.hProcess != NULL) {
+                TerminateProcess(piAppE.hProcess, 0);
+                CloseHandle(piAppE.hProcess);
+                CloseHandle(piAppE.hThread);
+                piAppE.hProcess = NULL;
+            }
+            break;
+        case '7':
+            if (piAppP.hProcess != NULL) {
+                TerminateProcess(piAppP.hProcess, 0);
+                CloseHandle(piAppP.hProcess);
+                CloseHandle(piAppP.hThread);
+                piAppP.hProcess = NULL;
+            }
+            break;
+        case '8':
+            if (piAppN.hProcess != NULL) {
+                TerminateProcess(piAppN.hProcess, 0);
+                CloseHandle(piAppN.hProcess);
+                CloseHandle(piAppN.hThread);
+                piAppN.hProcess = NULL;
+            }
+            break;
+        case '9':
+            ExitProcess(0);
+            break;
+
         }
-        WaitForSingleObject(piApp.hThread, INFINITE);
-        CloseHandle(piApp.hProcess);
-        CloseHandle(piApp.hThread);
-        CloseHandle(hThread);
-        return 0;
     }
+        WaitForSingleObject(piApp.hThread, INFINITE);
+        CloseHandle(piApp.hThread);
+        CloseHandle(piApp.hProcess);
+        return 0;
 }
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"

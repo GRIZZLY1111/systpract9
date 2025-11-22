@@ -1,5 +1,4 @@
 ﻿  systprakt9.cpp
-C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\systprakt9\systprakt9.cpp(58,13): warning C4311: приведение типов: усечение указателя из "HANDLE" в "int"
-C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\systprakt9\systprakt9.cpp(58,13): warning C4302: приведение типов: усечение из "HANDLE" к "int"
-C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\systprakt9\systprakt9.cpp(41,11): warning C4101: IDThread: неиспользованная локальная переменная
-  systprakt9.vcxproj -> C:\Users\admin\OneDrive\Рабочий стол\Системное программирование\systpract9-main\systprakt9\x64\Debug\systprakt9.exe
+C:\Users\st310-08\Desktop\systpract9-main\systprakt9\systprakt9\systprakt9.cpp(57,13): warning C4311: приведение типов: усечение указателя из "HANDLE" в "int"
+C:\Users\st310-08\Desktop\systpract9-main\systprakt9\systprakt9\systprakt9.cpp(57,13): warning C4302: приведение типов: усечение из "HANDLE" к "int"
+  systprakt9.vcxproj -> C:\Users\st310-08\Desktop\systpract9-main\systprakt9\x64\Debug\systprakt9.exe

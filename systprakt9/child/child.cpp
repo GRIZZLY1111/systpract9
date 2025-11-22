@@ -1,49 +1,30 @@
-﻿// childprocess.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+﻿// child.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
 #include <iostream>
-#include <Windows.h>
 #include <conio.h>
+#include <Windows.h>
 
 int main(int argc, char* argv[])
 {
     setlocale(0, "rus");
-    HANDLE hThread;
-
-    hThread = (HANDLE)atoi(argv[1]);
-    bool f = false;
-
-    std::cout << "Управление счетчиком:\n";
-    std::cout << "1 - приостановить/возобновить\n";
-    std::cout << "2 - выйти из контроллера\n";
-
+    int i;
+    std::cout << argv[0] << std::endl;
     while (true) {
-        char c = _getch();
-        if (c == '1') {
-            if (!f) {
-                SuspendThread(hThread);
-                f = true;
-                std::cout << "\n[ПАУЗА]" << std::endl;
-            }
-            else {
-                ResumeThread(hThread);
-                f = false;
-                std::cout << "\n[ВОЗОБНОВЛЕНО]" << std::endl;
-            }
-        }
-        else if (c == '2') {
-            std::cout << "\nВыход из контроллера." << std::endl;
+        char c;
+        std::cout << "Введите букву t для завершения потока" << std::endl;
+        std::cin >> c;
+        if (c == 't') {
+            ExitProcess(0);
             break;
         }
     }
+    std::cout << "\n Нажми на любую кнопку чтобы завершить процесс";
 
-    TerminateThread(hThread, 0);
-    CloseHandle(hThread);
-
-    std::cout << "Нажмите на клавиатуру чтобы закрыть это окно" << std::endl;
     _getch();
     return 0;
 }
+
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
