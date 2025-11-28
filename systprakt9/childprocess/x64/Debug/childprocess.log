@@ -1,3 +1,0 @@
-﻿  childprocess.cpp
-C:\Users\st310-08\Desktop\systpract9-main\systprakt9\childprocess\childprocess.cpp(13,15): warning C4312: приведение типов: преобразование из "int" в "HANDLE" большего размера
-  childprocess.vcxproj -> C:\Users\st310-08\Desktop\systpract9-main\systprakt9\x64\Debug\childprocess.exe
