@@ -64,30 +64,36 @@ int main()
         _getch();
         return GetLastError();
     }
-    STARTUPINFO siW;
-    PROCESS_INFORMATION piAppW;
+    STARTUPINFO siW[5];
+    PROCESS_INFORMATION piAppW[5];
+    int W = 0;
     STARTUPINFO siE;
-    PROCESS_INFORMATION piAppE;
+    PROCESS_INFORMATION piAppE[5];
+    int E = 0;
     STARTUPINFO siP;
-    PROCESS_INFORMATION piAppP;
+    PROCESS_INFORMATION piAppP[5];
+    int P = 0;
     STARTUPINFO siN;
-    PROCESS_INFORMATION piAppN;
-    piAppW.hProcess = NULL;
-    piAppE.hProcess = NULL;
-    piAppP.hProcess = NULL;
-    piAppN.hProcess = NULL;
+    PROCESS_INFORMATION piAppN[5];
+    int N = 0;
+    piAppW[0].hProcess = NULL;
+    piAppE[0].hProcess = NULL;
+    piAppP[0].hProcess = NULL;
+    piAppN[0].hProcess = NULL;
     while (true) {
         char x = _getch();
         switch (x) {
         case '1':
-            ZeroMemory(&siW, sizeof(STARTUPINFO));
-            siW.cb = sizeof(STARTUPINFO);
 
-            if (!CreateProcess(lpszAppNameW, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siW, &piAppW)) {
+            ZeroMemory(&siW[W], sizeof(STARTUPINFO));
+            siW[W].cb = sizeof(STARTUPINFO);
+
+            if (!CreateProcess(lpszAppNameW, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siW[W], &piAppW[W])) {
                 std::cout << "Процесс не запустился";
                 _getch();
                 return 0;
             }
+            W++;
             std::cout << "Процесс запустился" << std::endl;
 
             break;
@@ -96,11 +102,12 @@ int main()
             ZeroMemory(&siE, sizeof(STARTUPINFO));
             siE.cb = sizeof(STARTUPINFO);
 
-            if (!CreateProcess(lpszAppNameE, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siE, &piAppE)) {
+            if (!CreateProcess(lpszAppNameE, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siE, &piAppE[E])) {
                 std::cout << "Процесс не запустился";
                 _getch();
                 return 0;
             }
+            E++;
             std::cout << "Процесс запустился" << std::endl;
 
             break;
@@ -109,11 +116,12 @@ int main()
             ZeroMemory(&siP, sizeof(STARTUPINFO));
             siP.cb = sizeof(STARTUPINFO);
 
-            if (!CreateProcess(lpszAppNameP, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siP, &piAppP)) {
+            if (!CreateProcess(lpszAppNameP, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siP, &piAppP[P])) {
                 std::cout << "Процесс не запустился";
                 _getch();
                 return 0;
             }
+            P++;
             std::cout << "Процесс запустился" << std::endl;
             break;
         case '4':
@@ -121,43 +129,57 @@ int main()
             ZeroMemory(&siN, sizeof(STARTUPINFO));
             siN.cb = sizeof(STARTUPINFO);
 
-            if (!CreateProcess(lpszAppNameN, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siN, &piAppN)) {
+            if (!CreateProcess(lpszAppNameN, NULL, NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &siN, &piAppN[N])) {
                 std::cout << "Процесс не запустился";
                 _getch();
                 return 0;
             }
+            N++;
             std::cout << "Процесс запустился" << std::endl;
             break;
         case '5':
-            if (piAppW.hProcess != NULL) {
-                TerminateProcess(piAppW.hProcess, 0);
-                CloseHandle(piAppW.hProcess);
-                CloseHandle(piAppW.hThread);
-                piAppW.hProcess = NULL;
+            if (W == 0) {
+            }
+            else if (piAppW[W-1].hProcess != NULL) {
+                W--;
+                TerminateProcess(piAppW[W].hProcess, 0);
+                CloseHandle(piAppW[W].hProcess);
+                CloseHandle(piAppW[W].hThread);
+                piAppW[W].hProcess = NULL;
+
             }
             break;
         case '6':
-            if (piAppE.hProcess != NULL) {
-                TerminateProcess(piAppE.hProcess, 0);
-                CloseHandle(piAppE.hProcess);
-                CloseHandle(piAppE.hThread);
-                piAppE.hProcess = NULL;
+            if (E == 0) {
+            }
+            else if (piAppE[E - 1].hProcess != NULL) {
+                E = E - 1;
+                TerminateProcess(piAppE[E].hProcess, 0);
+                CloseHandle(piAppE[E].hProcess);
+                CloseHandle(piAppE[E].hThread);
+                piAppE[E].hProcess = NULL;
             }
             break;
         case '7':
-            if (piAppP.hProcess != NULL) {
-                TerminateProcess(piAppP.hProcess, 0);
-                CloseHandle(piAppP.hProcess);
-                CloseHandle(piAppP.hThread);
-                piAppP.hProcess = NULL;
+            if (P == 0) {
+            }
+            else if (piAppP[P - 1].hProcess != NULL) {
+                P--;
+                TerminateProcess(piAppP[P].hProcess, 0);
+                CloseHandle(piAppP[P].hProcess);
+                CloseHandle(piAppP[P].hThread);
+                piAppP[P].hProcess = NULL;
             }
             break;
         case '8':
-            if (piAppN.hProcess != NULL) {
-                TerminateProcess(piAppN.hProcess, 0);
-                CloseHandle(piAppN.hProcess);
-                CloseHandle(piAppN.hThread);
-                piAppN.hProcess = NULL;
+            if (N == 0) {
+            }
+            else if (piAppN[N - 1].hProcess != NULL) {
+                N--;
+                TerminateProcess(piAppN[N].hProcess, 0);
+                CloseHandle(piAppN[N].hProcess);
+                CloseHandle(piAppN[N].hThread);
+                piAppN[N].hProcess = NULL;
             }
             break;
         case '9':
